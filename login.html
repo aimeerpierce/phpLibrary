@@ -1,0 +1,62 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+	</head>
+
+	<body>
+		<form id="myForm" name="myForm">
+		<h1>Sign in:</h1>
+		    <label><b>Username</b></label>
+		    <input type="text" placeholder="Enter Username" name="user" required/>
+		
+		    <label><b>Password</b></label>
+		    <input type="password" placeholder="Enter Password" name="psw" required/>
+		    </form>
+		    <button id="login">Sign In</button>
+		    <p></p>
+		<table id="library" style="width:60%" border="2" cellpadding="2">
+		  <tr>
+		    <th>Art Shelf</th>
+		    <th>Science Shelf</th>
+		    <th>Sport Shelf</th>
+			<th>Literature Shelf</th>
+			<th>Reference Shelf</th>
+		  </tr>
+		</table>
+	<script>
+	$(document).ready(function(){
+		$('#login').click(function(){
+			var username = document.forms["myForm"]["user"].value;
+			var pass = document.forms["myForm"]["psw"].value;
+
+			var user = {
+				name:username,
+				password:pass
+			};
+
+			$.ajax({
+				type:'POST',
+				url:"checkLogin.php",
+				dataType: 'json',
+				data: user,
+				success : function (data) {
+					console.log(data);
+					if(data.status != false){
+						//if checkLogin.php returns true, show library data
+						//$('#form').hide();
+						$('#library').show();
+					} else {
+						console.log("username/password incorrect");
+					}
+				}	
+			});
+		});
+	});
+
+
+	</script>
+
+
+
+	</body>
+</html>

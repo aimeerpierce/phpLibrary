@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
+	</head>
+
+
+	<body>
+		<form id="myForm" name="myForm">
+		<h1>Sign up:</h1>
+		    <label><b>Username</b></label>
+		    <input type="text" placeholder="Enter Username" name="user" required/>
+		    <p></p>
+
+		    <label><b>Password</b></label>
+		    <input type="password" placeholder="Enter Password" name="psw" require/>
+		    <p></p>
+
+		    <label><b>Confirm Password</b></label>
+		    <input type="password" placeholder="Re-enter Password" name="confirmpsw" required/>
+			<p></p>
+
+		    <label><b>Email</b></label>
+		    <input type="email" placeholder="Enter email address" name="Email" required/>		    
+			<p></p>
+
+		    <label><b>Phone</b></label>
+		    <input type="phone" placeholder="xxx-xxx-xxxx" name="phone"/>
+			<p></p>
+
+		    <label><b>Are you a librarian?</b></label>
+		    <input type="checkbox" id="yesLibrarian" name="yesLibrarian" value="yesLibrarian" required> yes 
+		    <input type="checkbox" id="noLibrarian" name="noLibrarian" value="noLibrarian" required> no <br>
+			<p></p>
+
+		    <label><b>First Name</b></label>
+		    <input type="text" placeholder="First Name" name="firstName" required/>
+			<p></p>
+
+		    <label><b>Last Name</b></label>
+		    <input type="text" placeholder="Last Name" name="lastName" required/>
+			<p></p>
+		</form>
+		<button id="signUp">Sign Up</button>
+		<p></p>
+
+
+		<script src="formValidation.js"></script>
+	</body>
+
+</html>
