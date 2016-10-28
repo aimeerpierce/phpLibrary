@@ -4,6 +4,7 @@
 	</head>
 
 	<body>
+	<div id="signIn">
 		<form id="myForm" name="myForm">
 		<h1>Sign in:</h1>
 		    <label><b>Username</b></label>
@@ -13,16 +14,72 @@
 		    <input type="password" placeholder="Enter Password" name="psw" required/>
 		    </form>
 		    <button id="login">Sign In</button>
+	</div>
 		    <p></p>
+	<div id="library" style="display:none">
 		<table id="library" style="width:60%" border="2" cellpadding="2">
 		  <tr>
 		    <th>Art Shelf</th>
 		    <th>Science Shelf</th>
 		    <th>Sport Shelf</th>
 			<th>Literature Shelf</th>
-			<th>Reference Shelf</th>
 		  </tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
 		</table>
+	</div>
+		<p></p>
+		<p></p>
+	<div id="librarian" style="display:none">
+		<form id="addBook">
+			<label><b>Book ID</b></label>
+			<input type="text" placeholder="Enter ID to add" name="bookId">
+			<label><b>Book Title</b></label>
+			<input type="text" placeholder="Enter Title" name="bookTitle">
+			<label><b>Book Author</b></label>
+			<input type="text" placeholder="Enter Author Name" name="author">			
+			<button id="addBook">Add Book</button>
+		</form>
+		<p></p>
+		<form>
+			<label><b>Book ID</b></label>
+			<input type="text" placeholder="Enter ID to delete" name="bookId">			
+			<button id="addBook">Delete Book</button>
+		</form>
+		<form>
+			<label><b>Username</b></label>
+			<input type="text" placeholder="Enter Username" name="bookId">			
+			<button id="borrowHistory">View Borrow History</button>
+		</form>
+	</div>
 	<script>
 	$(document).ready(function(){
 		$('#login').click(function(){
@@ -43,8 +100,11 @@
 					console.log(data);
 					if(data.status != false){
 						//if checkLogin.php returns true, show library data
-						//$('#form').hide();
+						$('#signIn').hide();
 						$('#library').show();
+						if(data.librarian != false){
+							$('#librarian').show();
+						}
 					} else {
 						console.log("username/password incorrect");
 					}

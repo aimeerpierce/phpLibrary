@@ -7,11 +7,11 @@
 		}
 
 		if(!firstName.match(reg)){
-			alert('First name not alphanumeric.')
+			alert('First name not alphanumeric.');
 			return false;
 		}
 		if(!lastName.match(reg)){
-			alert('Last name not alphanumeric.')
+			alert('Last name not alphanumeric.');
 			return false;
 		}
 		if(password !== confirmPass){
@@ -32,7 +32,7 @@
 			alert('Format email address as such: email@foo.com');
 			return false;		
 		}
-		var regnum = /^(1\s|1|)?((\(\d{3}\))|\d{3})(\-|\s)?(\d{3})(\-|\s)?(\d{4})$/
+		var regnum = /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/;
 		if(!phone.match(regnum)){
 			alert('Phone number format incorrect. Please use xxx-xxx-xxxx.');
 			return false;
@@ -71,16 +71,18 @@
 				dataType:'json',
 				data:user,
 				success : function (data) {
-					$.ajax({
-						type:'POST',
-						url:"session.php",
-						dataType: 'json',
-						data: user,
-						success : function (data){
-							console.log(data);
-							window.location.href='login.html';
-						}
-					});
+					console.log(data);
+					window.location.href='login.html';
+					// $.ajax({
+					// 	type:'POST',
+					// 	url:"session.php",
+					// 	dataType: 'json',
+					// 	data: user,
+					// 	success : function (data){
+					// 		console.log(data);
+					// 		window.location ='login.html';
+					// 	}
+					// });
 				}
 			});
 		}
