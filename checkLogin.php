@@ -33,8 +33,6 @@ if ($conn->query($sql) !== TRUE) {
 if($result->num_rows > 0){
 
 	while($row = $result->fetch_assoc()){
-		//echo $row["userName"];
-		//echo $clientUserName;
 		if( (strcmp($row["userName"],$clientUserName) == 0) && (strcmp($row["Password"],$clientPassword) == 0) ){
 			$return["status"] = true;
 			if ($row["Librarian"] == 1){

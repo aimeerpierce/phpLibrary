@@ -16,7 +16,7 @@
 		    <button id="login">Sign In</button>
 	</div>
 		    <p></p>
-	<div id="library" style="display:none">
+	<div id="libraryDiv" style="display:none">
 		<table id="library" style="width:60%" border="2" cellpadding="2">
 		  <tr>
 		    <th>Art Shelf</th>
@@ -24,99 +24,35 @@
 		    <th>Sport Shelf</th>
 			<th>Literature Shelf</th>
 		  </tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-		</tr>
 		</table>
 	</div>
 		<p></p>
 		<p></p>
 	<div id="librarian" style="display:none">
-		<form id="addBook">
+		<form id="add" name="add">
 			<label><b>Book ID</b></label>
-			<input type="text" placeholder="Enter ID to add" name="bookId">
+			<input type="text" placeholder="Enter ID to add" name="bookIdA">
 			<label><b>Book Title</b></label>
-			<input type="text" placeholder="Enter Title" name="bookTitle">
+			<input type="text" placeholder="Enter Title" name="bookTitleA">
 			<label><b>Book Author</b></label>
-			<input type="text" placeholder="Enter Author Name" name="author">			
+			<input type="text" placeholder="Enter Author Name" name="author">
+			<label><b>Shelf</b></label>
+			<input type="text" placeholder="Enter shelf name, e.g. 'Art'" name="shelf">			
+		</form>
 			<button id="addBook">Add Book</button>
-		</form>
+		
 		<p></p>
-		<form>
+		<form id="delete" name="delete">
 			<label><b>Book ID</b></label>
-			<input type="text" placeholder="Enter ID to delete" name="bookId">			
-			<button id="addBook">Delete Book</button>
+			<input type="text" placeholder="Enter ID to delete" name="bookIdD">			
+			<button id="deleteBook">Delete Book</button>
 		</form>
-		<form>
+		<form id="viewBorrow" name="viewBorrow">
 			<label><b>Username</b></label>
-			<input type="text" placeholder="Enter Username" name="bookId">			
+			<input type="text" placeholder="Enter Username" name="bookIdV">			
 			<button id="borrowHistory">View Borrow History</button>
 		</form>
 	</div>
-	<script>
-	$(document).ready(function(){
-		$('#login').click(function(){
-			var username = document.forms["myForm"]["user"].value;
-			var pass = document.forms["myForm"]["psw"].value;
-
-			var user = {
-				name:username,
-				password:pass
-			};
-
-			$.ajax({
-				type:'POST',
-				url:"checkLogin.php",
-				dataType: 'json',
-				data: user,
-				success : function (data) {
-					console.log(data);
-					if(data.status != false){
-						//if checkLogin.php returns true, show library data
-						$('#signIn').hide();
-						$('#library').show();
-						if(data.librarian != false){
-							$('#librarian').show();
-						}
-					} else {
-						console.log("username/password incorrect");
-					}
-				}	
-			});
-		});
-	});
-
-
-	</script>
-
-
-
+	<script src="login.js"></script>
 	</body>
 </html>
