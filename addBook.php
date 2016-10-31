@@ -50,6 +50,9 @@ $book = array(
 	"availability"=>1,
 	"numberOfBooksOnShelf"=>$row_count
 );
+
+mysqli_close($conn);
+
 echo json_encode($book);
 
 ?>

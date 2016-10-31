@@ -1,4 +1,11 @@
+
+
 $(document).ready(function(){
+		$.get('populateLibrary.php', function(data) {
+  			alert('Library populated.');
+
+		});
+
 		$('#login').click(function(){
 			var username = document.forms["myForm"]["user"].value;
 			var pass = document.forms["myForm"]["psw"].value;
@@ -179,6 +186,6 @@ function displayInfo(title,author,id, availability){
 	// }else{
 	// 	var a = "not available.";
 	// }
-	var output = title;
+	var output = "Title: "+ title + "; Author: "+author+";ID: "+id+"; Availability: "+availability;
 	alert(output);
 }

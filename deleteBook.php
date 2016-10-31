@@ -15,7 +15,7 @@ $bookId = $_POST['id'];
 $sql3 = "SELECT ShelfId from shelves where BookId=$bookId";
 $shelf = $conn->query($sql3);
 
-if($shelf !== false){
+if($shelf->num_rows > 0){
 	$sql = "DELETE from books where BookId=$bookId";
 	$sql2 = "DELETE from shelves where BookId=$bookId";
 
@@ -29,6 +29,8 @@ $book = array(
 	"status"=>false,
 	"shelf"=>$shelf
 );
+
+mysqli_close($conn);
 
 echo json_encode($book);
 ?>
