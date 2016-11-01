@@ -28,12 +28,11 @@ $(document).ready(function(){
 			 			}
 						$.ajax({
 							type:'POST',
-							//dataType:'json',
+							dataType:'json',
 							url:"session.php",
 							data:user,
 							success : function(data){
-								console.log(data);
-								$('#session').html(data);
+								$('#session').html(data.username);
 							}
 						});
 					} else {
@@ -127,17 +126,13 @@ $(document).ready(function(){
 				success : function (data) {
 					console.log(data);
 					var book = data;
-					//var book = parsed.book;					//var author = JSON.stringify(data.author);
-					//var title = JSON.stringify(data.title);
-					//var title = data.title;
 					var id = book.BookId;
-					//var shelf = JSON.stringify(data.shelf);
-					//var availability = JSON.stringify(data.availability);
-					//var numberOfBooksOnShelf = data.numberOfBooksOnShelf;
 					var shelfnum = book.ShelfId;
-					//console.log(availability);
-					//addNewBook(shelf,shelfnum,title,author,id,availability);
-					deleteBook(id,shelfnum);
+					location.reload();
+					$('#myUsername').html(book.username);
+					$('#myPassword').html(book.password);
+					$('#login').click();
+					//deleteBook(id,shelfnum);
 				}
 			});			
 		});
@@ -145,19 +140,22 @@ $(document).ready(function(){
 });
 
 function deleteBook(id,shelfnum){
-	//find row that cell value is in
-	//find the column using the shelfnum property
-	//delete cell
-	//shift cells up (?)
-	var table = document.getElementById("library");
+	window.location.reload(false);
 
-	var tableRow = $("td").filter(function() {
-    	return $(this).text() == id;
-	}).closest("tr");
-	console.log("tableRow:"+tableRow.innerHTML);
+	document.getElementById("login").click();
+	// //find row that cell value is in
+	// //find the column using the shelfnum property
+	// //delete cell
+	// //shift cells up (?)
+	// var table = document.getElementById("library");
 
-	var row = table.rows[tableRow];
-	//row.deleteCell(shelfnum-1);
+	// var tableRow = $("td").filter(function() {
+ //    	return $(this).text() == id;
+	// }).closest("tr");
+	// console.log("tableRow:"+tableRow.innerHTML);
+
+	// var row = table.rows[tableRow];
+	// //row.deleteCell(shelfnum-1);
 }
 
 

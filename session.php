@@ -1,7 +1,13 @@
 <?php
-
+//if(!isset($_SESSION["login"]))
+$login = array();
 session_start();
-$_SESSION["name"] = $_POST['name'];
-echo $_SESSION["name"];
+$_SESSION["username"] = $_POST['name'];
+$_SESSION["password"] = $_POST['password'];
+
+$login["username"] = $_SESSION["username"];
+$login["password"] = $_SESSION["password"];
+
+echo json_encode($login);
 
 ?>

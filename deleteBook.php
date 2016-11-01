@@ -1,5 +1,5 @@
 <?php
-
+//$session_start();
 $username = "dbu319t25";
 $password = "Metr?b5d";
 $dbServer = "mysql.cs.iastate.edu";
@@ -14,6 +14,8 @@ if ($conn->connect_error) {
 $book = array();
 $bookId = $_POST['id'];
 $book["BookId"] = $bookId;
+//$book["username"] = $_SESSION["username"];
+//$book["password"] = $_SESSION["password"];
 
 $sql3 = "SELECT ShelfId from shelves where BookId=$bookId";
 $shelf = $conn->query($sql3);
