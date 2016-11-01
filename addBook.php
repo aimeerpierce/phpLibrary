@@ -47,8 +47,8 @@ $book = array(
 	"id"=>$bookId,
 	"shelf"=>$shelfname,
 	"shelfnum"=>$shelfnum,
-	"availability"=>1,
-	"numberOfBooksOnShelf"=>$row_count
+	"availability"=>1
+	//"numberOfBooksOnShelf"=>$row_count
 );
 
 mysqli_close($conn);

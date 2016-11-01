@@ -1,8 +1,7 @@
 <?php
 
 session_start();
-$_SESSION["name"] = $_POST['uname'];
+$_SESSION["name"] = $_POST['name'];
 echo $_SESSION["name"];
-
 
 ?>

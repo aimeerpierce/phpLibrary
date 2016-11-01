@@ -1,10 +1,6 @@
 
 
 $(document).ready(function(){
-		$.get('populateLibrary.php', function(data) {
-  			alert('Library populated.');
-
-		});
 
 		$('#login').click(function(){
 			var username = document.forms["myForm"]["user"].value;
@@ -21,19 +17,53 @@ $(document).ready(function(){
 				dataType: 'json',
 				data: user,
 				success : function (data) {
-					console.log(data);
+					//console.log(data);
 					if(data.status != false){
 						//if checkLogin.php returns true, show library data
-						$('#signIn').hide();
-						$('#libraryDiv').show();
+			 			$('#signIn').hide();
+			 			$('#libraryDiv').show();
+			 			$('#session').show();
 						if(data.librarian != false){
-							$('#librarian').show();
-						}
+			 				$('#librarian').show();
+			 			}
+						$.ajax({
+							type:'POST',
+							//dataType:'json',
+							url:"session.php",
+							data:user,
+							success : function(data){
+								console.log(data);
+								$('#session').html(data);
+							}
+						});
 					} else {
 						console.log("username/password incorrect");
 					}
 				}	
 			});
+			$.get("populateLibrary.php", function(data) {
+			
+				//while(data.books.length > 0){
+				var parsed = JSON.parse(data);
+				var books = parsed.books;
+				//console.log(books);
+				for(i = 0; i < books.length; i++ ){
+					// var author = JSON.stringify(data.books[i].author);
+					var author = books[i].Author;
+					var title = books[i].BookTitle;
+					// var title = JSON.stringify(data.books[i].title);
+					 var id = parseInt(books[i].bookId);
+					var availability = books[i].Availability;
+					//var numberOfBooksOnShelf = books[i].numberOfBooksOnShelf;
+					var shelfNum = parseInt(books[i].shelfId);
+					// var availability = JSON.stringify(data.books[i].availability);
+					// var numberOfBooksOnShelf = data.books[i].numberOfBooksOnShelf;
+					var shelf = books[i].shelfName;
+					addNewBook(shelf,shelfNum,title,author,id,availability);
+				}
+		});
+
+
 		});
 		$('#addBook').click(function(){
 			var bookId = document.forms["add"]["bookIdA"].value;
@@ -69,18 +99,18 @@ $(document).ready(function(){
 				success : function (data) {
 					console.log(data);
 					var author = JSON.stringify(data.author);
-					var title = JSON.stringify(data.title);
+					//var title = JSON.stringify(data.title);
+					var title = data.title;
 					var id = data.id;
 					var shelf = JSON.stringify(data.shelf);
 					var availability = JSON.stringify(data.availability);
-					var numberOfBooksOnShelf = data.numberOfBooksOnShelf;
+					//var numberOfBooksOnShelf = data.numberOfBooksOnShelf;
 					var shelfnum = data.shelfnum;
 					//console.log(availability);
-					addNewBook(shelf,shelfnum,numberOfBooksOnShelf,title,author,id,availability);
-					//addNewBook(data);
+					addNewBook(shelf,shelfnum,title,author,id,availability);
 
 				}
-			})
+			});
 		});
 
 		$('#deleteBook').click(function(){
@@ -89,15 +119,27 @@ $(document).ready(function(){
 			var book = {
 				id:bookId
 			};
-			// $.ajax({
-			// 	type:'POST',
-			// 	url:"deleteBook.php",
-			// 	dataType:'json',
-			// 	data:'book',
-			// 	success : function(data) {
-			// 		console.log(data);
-			// 	}
-			// })
+			$.ajax({
+				type:'POST',
+				url:"deleteBook.php",
+				dataType:'json',
+				data:book,
+				success : function (data) {
+					console.log(data);
+					var book = data;
+					//var book = parsed.book;					//var author = JSON.stringify(data.author);
+					//var title = JSON.stringify(data.title);
+					//var title = data.title;
+					var id = book.BookId;
+					//var shelf = JSON.stringify(data.shelf);
+					//var availability = JSON.stringify(data.availability);
+					//var numberOfBooksOnShelf = data.numberOfBooksOnShelf;
+					var shelfnum = book.ShelfId;
+					//console.log(availability);
+					//addNewBook(shelf,shelfnum,title,author,id,availability);
+					deleteBook(id,shelfnum);
+				}
+			});			
 		});
 
 });
@@ -107,25 +149,39 @@ function deleteBook(id,shelfnum){
 	//find the column using the shelfnum property
 	//delete cell
 	//shift cells up (?)
+	var table = document.getElementById("library");
+
 	var tableRow = $("td").filter(function() {
     	return $(this).text() == id;
 	}).closest("tr");
+	console.log("tableRow:"+tableRow.innerHTML);
+
 	var row = table.rows[tableRow];
-	row.deleteCell(shelfnum-1);
+	//row.deleteCell(shelfnum-1);
 }
 
 
 
-function addNewBook(shelf,shelfNum,numberOfBooksOnShelf,title,author,id,availability){
+
+function addNewBook(shelf,shelfNum,title,author,id,availability){
 	//var numberOfBooksOnShelf = JSON.stringify(data.numberOfBooksOnShelf);
 	var table = document.getElementById("library");
 	var length = document.getElementById("library").rows.length;
+	numberOfBooksOnShelf = 1;
+	for (var i=1; i<length;i++) {
+		if (document.getElementById("library").rows[i].cells.length >= shelfNum && document.getElementById("library").rows[i].cells[shelfNum-1].innerHTML !== "") {
+			numberOfBooksOnShelf++;
+		}else {
+			break;
+		}
+	}
 
 	if(canAddBook(numberOfBooksOnShelf)){
 		//var addRow = addToRow(numberOfBooksOnShelf);
 		//var row = document.getElementById(addRow);
-		console.log("length before insertion:"+length);
-		console.log("number of books:"+numberOfBooksOnShelf);
+		//console.log("length before insertion:"+length);
+		//console.log("number of books on shelf:"+numberOfBooksOnShelf);
+		//console.log("book id:"+id);
 		var num = shelfNum - 1;
 		if(length <= numberOfBooksOnShelf){
 			var row = table.insertRow(length);
@@ -181,11 +237,6 @@ function addStatusEvent(cell,title,author,id,availability){
 	});
 }
 function displayInfo(title,author,id, availability){
-	// if(availability !=0){
-	// 	var a = "available.";
-	// }else{
-	// 	var a = "not available.";
-	// }
 	var output = "Title: "+ title + "; Author: "+author+";ID: "+id+"; Availability: "+availability;
 	alert(output);
 }

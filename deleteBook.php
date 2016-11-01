@@ -10,12 +10,18 @@ $conn = new mysqli($dbServer,$username,$password,$dbName);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+
+$book = array();
 $bookId = $_POST['id'];
+$book["BookId"] = $bookId;
 
 $sql3 = "SELECT ShelfId from shelves where BookId=$bookId";
 $shelf = $conn->query($sql3);
 
 if($shelf->num_rows > 0){
+	while($row = $shelf->fetch_assoc()){
+		$book["ShelfId"] = $row["ShelfId"];
+	}
 	$sql = "DELETE from books where BookId=$bookId";
 	$sql2 = "DELETE from shelves where BookId=$bookId";
 
@@ -25,12 +31,9 @@ if($shelf->num_rows > 0){
 		$book["error"] = "Error: " . $sql . "<br>" . $conn->error;
 	}
 }
-$book = array(
-	"status"=>false,
-	"shelf"=>$shelf
-);
 
-mysqli_close($conn);
+
+//mysqli_close($conn);
 
 echo json_encode($book);
 ?>
