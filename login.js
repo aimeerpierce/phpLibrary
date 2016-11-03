@@ -45,12 +45,9 @@ $(document).ready(function(){
 				//while(data.books.length > 0){
 				var parsed = JSON.parse(data);
 				var books = parsed.books;
-				//console.log(books);
 				for(i = 0; i < books.length; i++ ){
-					// var author = JSON.stringify(data.books[i].author);
 					var author = books[i].Author;
 					var title = books[i].BookTitle;
-					// var title = JSON.stringify(data.books[i].title);
 					 var id = parseInt(books[i].bookId);
 					var availability = books[i].Availability;
 					//var numberOfBooksOnShelf = books[i].numberOfBooksOnShelf;
@@ -114,7 +111,7 @@ $(document).ready(function(){
 
 		$('#deleteBook').click(function(){
 			var bookId = document.forms["delete"]["bookIdD"].value;
-			console.log(bookId);
+			//console.log(bookId);
 			var book = {
 				id:bookId
 			};
@@ -135,6 +132,44 @@ $(document).ready(function(){
 					//deleteBook(id,shelfnum);
 				}
 			});			
+		});
+		$('#History').click(function(){
+			var viewUser = document.forms["viewBorrow"]["bookIdv"].value;
+			var user = {
+				username:viewUser
+			};
+			//console.log(viewUser);
+			//console.log("hi");
+			$.ajax({
+				type:'POST',
+				url:"getHistory.php",
+				data:user,
+				//dataType:'json',
+				success : function (data) {
+					//var string = JSON.stringify(data.user);
+					//var userData = "";
+					$('#historyDisplay').show();
+					var parsed = JSON.parse(data);
+					var user = parsed.user;
+					console.log(user);
+					console.log(user.length);
+					//console.log(data.user[0]);
+					//console.log(myUser);
+					// //var userData = data.userData;
+					for(var i = 0; i < user.length; i++){
+						addHistory(i+1,user[i].BookId,user[i].DueDate,user[i].ReturnedDate);
+					 	// $('#historyDisplay').html(user[i].BookId);
+					 	// $('#historyDisplay').html(user[i].DueDate);
+					 	// $('#historyDisplay').html(user[i].ReturnedDate);
+					 }
+					// console.log(JSON.stringify(data.user[0]));
+					// console.log(thisUser);
+					 // console.log(data.user[0].BookId);
+					 // console.log(data.user.length);
+					//var display = JSON.stringify
+					//$('#historyDisplay').html(user[0].BookId);
+				}
+			});
 		});
 
 });
@@ -158,7 +193,21 @@ function deleteBook(id,shelfnum){
 	// //row.deleteCell(shelfnum-1);
 }
 
+function addHistory(i,BookId,DueDate,ReturnedDate){
+	var table = document.getElementById("historyTable");
 
+	var IDrow = table.rows[0];
+	IDrow.insertCell(i);
+	IDrow.cells[i].innerHTML = BookId;
+
+	var DueDateRow = table.rows[1];
+	DueDateRow.insertCell(i);
+	DueDateRow.cells[i].innerHTML = DueDate;
+
+	var RetDateRow = table.rows[2];
+	RetDateRow.insertCell(i);
+	RetDateRow.cells[i].innerHTML = ReturnedDate;
+}
 
 
 function addNewBook(shelf,shelfNum,title,author,id,availability){
@@ -169,7 +218,7 @@ function addNewBook(shelf,shelfNum,title,author,id,availability){
 	for (var i=1; i<length;i++) {
 		if (document.getElementById("library").rows[i].cells.length >= shelfNum && document.getElementById("library").rows[i].cells[shelfNum-1].innerHTML !== "") {
 			numberOfBooksOnShelf++;
-		}else {
+		} else {
 			break;
 		}
 	}
