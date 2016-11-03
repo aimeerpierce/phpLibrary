@@ -1,7 +1,5 @@
 
-
 $(document).ready(function(){
-
 		$('#login').click(function(){
 			var username = document.forms["myForm"]["user"].value;
 			var pass = document.forms["myForm"]["psw"].value;
@@ -20,19 +18,26 @@ $(document).ready(function(){
 					//console.log(data);
 					if(data.status != false){
 						//if checkLogin.php returns true, show library data
-			 			$('#signIn').hide();
-			 			$('#libraryDiv').show();
-			 			$('#session').show();
-						if(data.librarian != false){
+			 			//$('#signIn').hide();
+			 			//$('#libraryDiv').show();
+			 			//$('#session').show();
+			 			if (data.librarian != false) {
+			 			    $('#signIn').hide();
+			 			    $('#libraryDiv').show();
+			 			    $('#session').show();
 			 				$('#librarian').show();
-			 			}
+						}
+						else {
+						    window.location.href = 'studentHtml.php';
+						    //$('#student').show();
+						}
 						$.ajax({
 							type:'POST',
 							dataType:'json',
 							url:"session.php",
 							data:user,
 							success : function(data){
-								$('#session').html(data.username);
+								$('#session').html(username);
 							}
 						});
 					} else {
@@ -113,7 +118,8 @@ $(document).ready(function(){
 			var bookId = document.forms["delete"]["bookIdD"].value;
 			//console.log(bookId);
 			var book = {
-				id:bookId
+			    id: bookId
+
 			};
 			$.ajax({
 				type:'POST',
@@ -172,6 +178,72 @@ $(document).ready(function(){
 			});
 		});
 
+
+		$('#borrowButton').click(function () {
+		    var bookId = document.forms["borrow"]["borrowID"].value;
+		    var date = new Date();
+		    var dueDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay();
+
+		    var book = {
+                command:"borrow",
+                id: bookId,
+                dueDate: dueDate
+		    };
+		    $.ajax({
+		        type: 'POST',
+		        url: "student.php",
+		        dataType: 'json',
+		        data: book,
+		        success: function (data) {
+		            console.log(data);
+		            alert("borrow succeed");
+		            $.get("populateLibrary.php", function (data) {
+
+		                //while(data.books.length > 0){
+		                var parsed = JSON.parse(data);
+		                var books = parsed.books;
+		                //console.log(books);
+		                for (i = 0; i < books.length; i++) {
+		                    // var author = JSON.stringify(data.books[i].author);
+		                    var author = books[i].Author;
+		                    var title = books[i].BookTitle;
+		                    // var title = JSON.stringify(data.books[i].title);
+		                    var id = parseInt(books[i].bookId);
+		                    var availability = books[i].Availability;
+		                    //var numberOfBooksOnShelf = books[i].numberOfBooksOnShelf;
+		                    var shelfNum = parseInt(books[i].shelfId);
+		                    // var availability = JSON.stringify(data.books[i].availability);
+		                    // var numberOfBooksOnShelf = data.books[i].numberOfBooksOnShelf;
+		                    var shelf = books[i].shelfName;
+		                    addNewBook(shelf, shelfNum, title, author, id, availability);
+		                }
+		            });
+		        }
+		    });
+
+		});
+
+		$('#returnButton').click(function () {
+		    var bookId = document.forms["return"]["returnID"].value;
+		    var date = new Date();
+		    var returnedDate = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay();
+		    var book = {
+		        command: "return",
+		        id: bookId,
+                returnedDate:returnedDate
+		    };
+		    $.ajax({
+		        type: 'POST',
+		        url: "student.php",
+		        dataType: 'json',
+		        data: book,
+		        success: function (data) {
+		            console.log(data);
+
+		        }
+		    });
+
+		});
 });
 
 function deleteBook(id,shelfnum){
@@ -286,4 +358,9 @@ function addStatusEvent(cell,title,author,id,availability){
 function displayInfo(title,author,id, availability){
 	var output = "Title: "+ title + "; Author: "+author+";ID: "+id+"; Availability: "+availability;
 	alert(output);
+}
+
+//Check Availability
+function check(id) {
+
 }
