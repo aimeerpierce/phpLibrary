@@ -3,9 +3,11 @@
 //return json object with success/failure info
 $return = array(
 	"status"=>false,
-	"error"=>none,
+	"error"=>'none',
 	"librarian"=>0
 	);
+
+session_start();
 
 $username = "dbu319t25";
 $password = "Metr?b5d";
@@ -35,11 +37,14 @@ if($result->num_rows > 0){
 	while($row = $result->fetch_assoc()){
 		if( (strcmp($row["userName"],$clientUserName) == 0) && (strcmp($row["Password"],$clientPassword) == 0) ){
 			$return["status"] = true;
+
+			$_SESSION['username'] = $clientUserName;
+
 			if ($row["Librarian"] == 1){
 				$return["librarian"] = true;
 			}
 		}
-		
+
 	}
 }
 

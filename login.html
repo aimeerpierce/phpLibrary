@@ -4,6 +4,9 @@
 	</head>
 
 	<body>
+        <?php
+             session_start();
+        ?>
 	<div id="signIn">
 		<form id="myForm" name="myForm">
 		<h1>Sign in:</h1>
@@ -17,7 +20,7 @@
 	</div>
 	<div id="session" style="display:none">
 	</div>
-		    <p></p>
+    <p></p>
 	<div id="libraryDiv" style="display:none">
 		<table id="library" style="width:60%" border="2" cellpadding="2">
 		  <tr>
@@ -56,6 +59,21 @@
 			<button id="borrowHistory">View Borrow History</button>
 		</form>
 	</div>
+
+    <div id="student" style="display:none">
+        <p></p>
+        <form id="borrow" name="borrow">
+            <label><b>Borrow Book</b></label>
+            <input type="text" placeholder="Enter ID to borrow" name="borrowID">
+        </form>
+        <button id="borrowButton">Borrow</button>
+        <p></p>
+        <form id="return" name="return">
+            <label><b>Return Book</b></label>
+            <input type="text" placeholder="Enter ID to return" name="returnID">
+        </form>
+        <button id="returnButton">Return</button>
+    </div>
 	<script src="login.js"></script>
 	</body>
 </html>
